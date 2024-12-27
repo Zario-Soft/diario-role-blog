@@ -9,7 +9,7 @@ export class ContactFormService {
     }
 
     public async sendMessage(message: string): Promise<void> {
-        await this.request.post(`${this.SEND_URL}${encodeURI(message)}`);
+        await this.request.post(`${this.SEND_URL}${encodeURI(message)}`, { baseURL: '' });
     }
 }
 

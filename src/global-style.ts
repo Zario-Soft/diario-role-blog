@@ -42,6 +42,29 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 5px;
     margin: 10px;
   }
+
+  .txt-box-small {
+    width: 20%;
+  }
+
+  .txt-box-medium {
+    width: 48%;
+  }
+
+  .txt-box-large {
+    width: 70%;
+  }
+
+  .form-control {
+    min-width: 150px;
+  }
+
+  .general-input,
+  .txt-box,
+  .txt-box-small,
+  .txt-box-large {
+    margin-bottom: 15px !important;
+  }
 `
 
 export default GlobalStyle;

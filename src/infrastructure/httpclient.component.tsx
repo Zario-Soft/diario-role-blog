@@ -1,6 +1,10 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { API_URL } from './env';
 
 export class HttpClient {
+    token: string | undefined = localStorage.getItem('token') || undefined;
+    api_url: string | undefined = API_URL;
+    
     constructor() {
         axios.interceptors.response.use(
             (response: any) => response,
@@ -37,9 +41,11 @@ export class HttpClient {
     private getDefaultOptions(): any {
         return {
             headers: {
+                Authorization: this.token ? `Bearer ${this.token}` : '',
                 'Content-Type': 'application/json',
             },
-            timeout: 30000
+            timeout: 30000,
+            baseURL: this.api_url,
         }
     }
 }
