@@ -6,6 +6,7 @@ import TicketsService, { UserExistsDto } from './tickets.service';
 import LimitedTextField from 'src/components/LimitedTextField/limited-text-field.component';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
+import TicketCard from './ticket.component';
 
 type UserInfo = UserExistsDto & {
     password?: string;
@@ -97,15 +98,15 @@ export default function Tickets() {
         await setSuccessState(SuccessState.LoggedIn);
 
         toast.success('Login realizado com sucesso!');
-        
-        window.location.reload();        
+
+        window.location.reload();
     }
 
     return <>
         <GlobalStyle />
         <StickyHeader
             menuItems={[
-                { text: 'Inicio', link: '/' },
+                { text: 'Inicio', link: window.location.pathname + window.location.search },
             ]}
         />
         <div className="container">
@@ -114,11 +115,21 @@ export default function Tickets() {
             {!isLoading && <h1>{`Usuário '${user}'`}</h1>}
 
             {userInfo && userInfo.hasPassword && userInfo.tickets && <>
-                <h3>{`Seus tickets`}</h3>
-                {userInfo.tickets.map((ticket, index) => <>
-                    <h4 key={Date.now().toString()}>{ticket.title}</h4>
-                    <h5 key={Date.now().toString() + (index + 1)}>{ticket.description}</h5>
-                </>)}
+                <h3>{`Seus cupons`}</h3>
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px',
+                }}>
+                    {userInfo.tickets.map((ticket, index) => <TicketCard
+                        key={index}
+                        title={ticket.title}
+                        text={ticket.description}
+                    />
+                    )}
+                </div>
             </>}
             {userInfo && userInfo.hasPassword && !localStorage.getItem('token') && <>
                 <h5>{`Bem-vindo(a) de volta!`}</h5>
