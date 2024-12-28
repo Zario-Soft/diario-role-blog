@@ -22,8 +22,14 @@ export class TicketsService {
         return data;
     }
 
-    public async performLogin(userInfo: string, password: string): Promise<boolean> {
+    public async performLogin(userInfo: string, password: string): Promise<{ access_token: string }> {
         const { data } = await this.request.post(`auth/login`, { username: userInfo, password });
+
+        return data;
+    }
+
+    public async getUserTickets(userInfo: string): Promise<any> {
+        const { data } = await this.request.get(`customers/${userInfo}/tickets`);
 
         return data;
     }

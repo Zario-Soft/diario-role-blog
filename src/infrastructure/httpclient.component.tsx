@@ -2,9 +2,8 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { API_URL } from './env';
 
 export class HttpClient {
-    token: string | undefined = localStorage.getItem('token') || undefined;
     api_url: string | undefined = API_URL;
-    
+
     constructor() {
         axios.interceptors.response.use(
             (response: any) => response,
@@ -17,6 +16,7 @@ export class HttpClient {
                 return errorObj
             });
     }
+
 
     public async get(url: string, options: AxiosRequestConfig<any> = {}): Promise<AxiosResponse<any, any>> {
         return await axios.get(url, { ...this.getDefaultOptions(), ...options });
@@ -38,10 +38,12 @@ export class HttpClient {
         return await axios.delete(url, { ...this.getDefaultOptions(), ...options });
     }
 
+    private getToken(): string | null { return localStorage.getItem('token'); }
+
     private getDefaultOptions(): any {
         return {
             headers: {
-                Authorization: this.token ? `Bearer ${this.token}` : '',
+                Authorization: this.getToken() ? `Bearer ${this.getToken()}` : '',
                 'Content-Type': 'application/json',
             },
             timeout: 30000,

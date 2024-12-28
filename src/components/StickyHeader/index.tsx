@@ -1,10 +1,21 @@
 import * as Styled from './styles'
 
 interface StickyHeaderProps {
-    hideMenu?:boolean,
+    hideMenu?: boolean,
+    menuItems?: {
+        text: string,
+        link: string
+    }[]
 }
 
 function StickyHeader(props: StickyHeaderProps) {
+    const menuItems = props.menuItems ?? [
+        { text: 'Sobre', link: '/#sobre' },
+        { text: 'Contato', link: '/#contato' },
+        { text: 'Parcerias', link: '/#parceria' },
+        { text: 'Videos', link: '/#videos' }
+    ]
+
     window.onscroll = () => {
         const header = document.getElementById("myHeader");
         const sticky = header?.offsetTop ?? -1;
@@ -18,14 +29,12 @@ function StickyHeader(props: StickyHeaderProps) {
     return <>
         <Styled.Container>
             <img src='/logo_panel.png' alt="Diário de Rolê - Logo do blog" />
-            {(props.hideMenu === undefined || props.hideMenu === false) && <div className="header" id="myHeader">
+            {!props.hideMenu && <div className="header" id="myHeader">
                 <nav>
-                    <a href="/#sobre">Sobre</a> |&nbsp; 
-                    <a href="/#contato">Contato</a> |&nbsp;
-                    <a href="/#parceria">Parcerias</a> |&nbsp;
-                    <a href="/#videos">Videos</a>
+                    {menuItems.map((item, index) => <><a key={Date.now()} href={item.link}>{item.text}</a>{index === menuItems.length - 1 ? '' : ' | '}</>)}
                 </nav>
-            </div>}
+            </div>
+            }
         </Styled.Container>
     </>
 }

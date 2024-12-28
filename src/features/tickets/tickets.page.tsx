@@ -5,10 +5,18 @@ import GlobalStyle from 'src/global-style';
 import TicketsService, { UserExistsDto } from './tickets.service';
 import LimitedTextField from 'src/components/LimitedTextField/limited-text-field.component';
 import { Button } from '@mui/material';
+import { toast } from 'react-toastify';
 
 type UserInfo = UserExistsDto & {
     password?: string;
     confirmation?: string;
+    tickets?: any[];
+}
+
+enum SuccessState {
+    None,
+    PasswordSaved,
+    LoggedIn
 }
 
 export default function Tickets() {
@@ -16,7 +24,7 @@ export default function Tickets() {
     const navigate = useNavigate();
     const user = searchParams.get("user");
     const [isLoading, setIsLoading] = useState(true);
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [successState, setSuccessState] = useState(SuccessState.None);
     const [userInfo, setUserInfo] = useState<UserInfo>();
     const service = useMemo(() => new TicketsService(), []);
 
@@ -35,6 +43,17 @@ export default function Tickets() {
                 }
             });
     }, [user, navigate, service]);
+
+    useEffect(() => {
+        if (!userInfo?.hasPassword || !localStorage.getItem('token')) {
+            return;
+        }
+
+        service.getUserTickets(user!)
+            .then((response) => {
+                setUserInfo((prevUserInfo) => ({ ...prevUserInfo, tickets: response.tickets, hasPassword: true }));
+            });
+    }, [userInfo?.hasPassword, user, service]);
 
     if (!user) {
         return null;
@@ -61,29 +80,47 @@ export default function Tickets() {
 
         if (userInfo?.password) {
 
-            const saved = await service.savePassword(user, userInfo.password);
-            await setIsSuccess(saved);
+            await service.savePassword(user, userInfo.password);
+            await setSuccessState(SuccessState.PasswordSaved);
             await setUserInfo(undefined);
         }
     }
 
     const onLogin = async () => {
-        if (userInfo?.password) {
-            const saved = await service.performLogin(user, userInfo.password);
-            console.log(saved);
-            await setUserInfo(undefined);
-        }
+        if (!userInfo?.password)
+            return;
+
+        const loginResult = await service.performLogin(user, userInfo.password);
+        localStorage.setItem('token', loginResult.access_token);
+        console.log(loginResult);
+        await setUserInfo(undefined);
+        await setSuccessState(SuccessState.LoggedIn);
+
+        toast.success('Login realizado com sucesso!');
+        
+        window.location.reload();        
     }
 
     return <>
         <GlobalStyle />
-        <StickyHeader />
+        <StickyHeader
+            menuItems={[
+                { text: 'Inicio', link: '/' },
+            ]}
+        />
         <div className="container">
             {isLoading && <h1>{'CARREGANDO...'}</h1>}
 
             {!isLoading && <h1>{`Usuário '${user}'`}</h1>}
 
-            {userInfo && userInfo.hasPassword && <>
+            {userInfo && userInfo.hasPassword && userInfo.tickets && <>
+                <h3>{`Seus tickets`}</h3>
+                {userInfo.tickets.map((ticket, index) => <>
+                    <h4 key={Date.now().toString()}>{ticket.title}</h4>
+                    <h5 key={Date.now().toString() + (index + 1)}>{ticket.description}</h5>
+                </>)}
+            </>}
+            {userInfo && userInfo.hasPassword && !localStorage.getItem('token') && <>
                 <h5>{`Bem-vindo(a) de volta!`}</h5>
                 <LimitedTextField
                     maxLength={80}
@@ -104,9 +141,9 @@ export default function Tickets() {
                 </Button>
             </>}
 
-            {isSuccess && <>
+            {successState === SuccessState.PasswordSaved && <>
                 <h1>{`Senha cadastrada com sucesso!`}</h1>
-                <a href={window.location.href}>Efetuar login</a>
+                <a href={window.location.href}>Clique aqui para efetuar o login</a>
             </>}
 
             {userInfo && !userInfo.hasPassword && <>
