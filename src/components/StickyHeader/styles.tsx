@@ -24,10 +24,6 @@ export const Container = styled.header`
     top: 0;
     width: 100%;
   }
-  
-  .sticky + .content {
-    padding-top: 102px;
-  }
 
   nav {
     text-align: center;

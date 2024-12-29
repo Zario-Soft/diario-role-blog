@@ -18,10 +18,11 @@ function StickyHeader(props: StickyHeaderProps) {
 
     window.onscroll = () => {
         const header = document.getElementById("myHeader");
-        const sticky = header?.offsetTop ?? -1;
-        if (window.pageYOffset > sticky) {
+        let sticky = header?.offsetTop ?? -1;
+
+        if (sticky !== 0 && window.scrollY > sticky) {
             header?.classList.add("sticky");
-        } else {
+        } else if (window.scrollY < 480) {
             header?.classList.remove("sticky");
         }
     }

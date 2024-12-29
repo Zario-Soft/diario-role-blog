@@ -30,8 +30,8 @@ export default function TicketCard({ text, title, image, locationUrl, useTicketU
             </Typography>
         </CardContent>
         <CardActions>
-            {alreadyUsed 
-            ? <Button size="small" disabled>Cupom já utlilizado!</Button>
+            {alreadyUsed
+                ? <Button size="small" disabled>Cupom já utlilizado!</Button>
                 : <>
                     <Button size="small" onClick={() => navigate(useTicketUrl!)}>Usar cupom</Button>
                     <Button size="small" onClick={() => window.open(locationUrl, "_blank")}>Localização</Button>
