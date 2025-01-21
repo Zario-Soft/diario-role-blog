@@ -1,3 +1,4 @@
+import { pageRoutes } from 'src/routes';
 import * as Styled from './styles'
 
 interface StickyHeaderProps {
@@ -21,7 +22,7 @@ function StickyHeader(props: StickyHeaderProps) {
             {(props.hideMenu === undefined || props.hideMenu === false) && <div className="header" id="myHeader">
                 <nav>
                     <a href="/#sobre">Sobre</a> |&nbsp; 
-                    <a href="/#contato">Contato</a> |&nbsp;
+                    <a href={pageRoutes.FORMULARIO}>Contato</a> |&nbsp;
                     <a href="/#parceria">Parcerias</a> |&nbsp;
                     <a href="/#videos">Videos</a>
                 </nav>

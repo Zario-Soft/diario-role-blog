@@ -126,7 +126,7 @@ function App() {
           buttonCaption="Saiba mais"
           pictureUrl="/assessoria.jpg"
           title="Assessoria jurídica"
-          summary={["Uma parceria com a advogada Andreína Martinez, especializada em \"extranjería\".",
+          summary={["Uma parceria com a advogada Beatriz Guimarães, especializada em \"extranjería\".",
             "Com nossa assessoria, iremos te ajudar em diversos trâmites burocráticos aqui na Espanha, com o respaldo de uma profissional muito competente, com vários anos de experiência.",
             "Agende sua videochamada e tire todas as suas dúvidas!"]}
           style={{
