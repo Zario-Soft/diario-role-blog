@@ -32,7 +32,7 @@ function StickyHeader(props: StickyHeaderProps) {
             <img src='/logo_panel.png' alt="Diário de Rolê - Logo do blog" />
             {!props.hideMenu && <div className="header" id="myHeader">
                 <nav>
-                    {menuItems.map((item, index) => <><a key={Date.now()} href={item.link}>{item.text}</a>{index === menuItems.length - 1 ? '' : ' | '}</>)}
+                    {menuItems.map((item, index) => <><a key={Date.now() * index + 1} href={item.link}>{item.text}</a>{index === menuItems.length - 1 ? '' : ' | '}</>)}
                 </nav>
             </div>
             }

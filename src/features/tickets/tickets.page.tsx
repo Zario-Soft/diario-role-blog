@@ -3,12 +3,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import StickyHeader from 'src/components/StickyHeader';
 import GlobalStyle from 'src/global-style';
 import TicketsService, { UserExistsDto } from './tickets.service';
-import LimitedTextField from 'src/components/LimitedTextField/limited-text-field.component';
-import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
-import TicketCard from './ticket.component';
+import PasswordSuccess from './password-success.component';
+import PasswordRegistry from './password-registry.component';
+import Login from './login.component';
+import TicketsArea from './tickets-area.component';
 
-type UserInfo = UserExistsDto & {
+export type UserInfo = UserExistsDto & {
     password?: string;
     confirmation?: string;
     tickets?: any[];
@@ -110,87 +111,25 @@ export default function Tickets() {
             ]}
         />
         <div className="container">
-            {isLoading && <h1>{'CARREGANDO...'}</h1>}
+            {<h1>{isLoading ? 'CARREGANDO...' : `Usuário '${user}'`}</h1>}
 
-            {!isLoading && <h1>{`Usuário '${user}'`}</h1>}
+            {userInfo && userInfo.hasPassword && userInfo.tickets && <TicketsArea
+                userInfo={userInfo}
+            />}
 
-            {userInfo && userInfo.hasPassword && userInfo.tickets && <>
-                <h3>{`Seus cupons`}</h3>
-                <div style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px',
-                }}>
-                    {userInfo.tickets.map((ticket, index) => <TicketCard
-                        key={index}
-                        title={ticket.title}
-                        text={ticket.description}
-                    />
-                    )}
-                </div>
-            </>}
-            {userInfo && userInfo.hasPassword && !localStorage.getItem('token') && <>
-                <h5>{`Bem-vindo(a) de volta!`}</h5>
-                <LimitedTextField
-                    maxLength={80}
-                    className='txt-box txt-box-small'
-                    id="senha"
-                    label="Informe sua senha"
-                    variant="standard"
-                    type="password"
-                    value={userInfo.password}
-                    onChange={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
-                    error={!userInfo.password || userInfo.password.trim() === ''}
-                    helperText={!userInfo.password || userInfo.password.trim() === '' ? 'Campo obrigatório' : ''}
-                />
-                <Button
-                    variant="contained"
-                    onClick={onLogin}>
-                    Salvar
-                </Button>
-            </>}
+            {userInfo && userInfo.hasPassword && !localStorage.getItem('token') && <Login
+                onLogin={onLogin}
+                userInfo={userInfo}
+            />}
 
-            {successState === SuccessState.PasswordSaved && <>
-                <h1>{`Senha cadastrada com sucesso!`}</h1>
-                <a href={window.location.href}>Clique aqui para efetuar o login</a>
-            </>}
+            {successState === SuccessState.PasswordSaved && <PasswordSuccess />}
 
-            {userInfo && !userInfo.hasPassword && <>
-                <h5>{`Vamos começar cadastrando sua senha!`}</h5>
-                <LimitedTextField
-                    maxLength={80}
-                    className='txt-box txt-box-small'
-                    id="senha"
-                    label="Informe uma senha"
-                    variant="standard"
-                    type="password"
-                    value={userInfo.password}
-                    onChange={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
-                    error={!userInfo.password || userInfo.password.trim() === ''}
-                    helperText={!userInfo.password || userInfo.password.trim() === '' ? 'Campo obrigatório' : ''}
-                />
-
-                <LimitedTextField
-                    maxLength={80}
-                    className='txt-box txt-box-small'
-                    id="senha"
-                    label="Confirme sua senha"
-                    variant="standard"
-                    type="password"
-                    value={userInfo.confirmation}
-                    onChange={(e) => setUserInfo({ ...userInfo, confirmation: e.target.value })}
-                    error={isConfirmationError()}
-                    helperText={confirmationHelpText()}
-                />
-
-                <Button
-                    variant="contained"
-                    onClick={onConfirm}>
-                    Salvar
-                </Button>
-            </>}
+            {userInfo && !userInfo.hasPassword && <PasswordRegistry
+                onConfirm={onConfirm}
+                userInfo={userInfo}
+                isConfirmationError={isConfirmationError}
+                confirmationHelpText={confirmationHelpText}
+            />}
         </div>
     </>
 }
