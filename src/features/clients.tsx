@@ -6,7 +6,7 @@ export default function Clients() {
     const navigator = useNavigate();
 
     return <>
-        <h2 id="parceria">Nossos Clientes</h2>
+        <h2 id="clientes">Nossos Clientes</h2>
         <div style={{
             display: 'flex',
             flexWrap: 'wrap',
