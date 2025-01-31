@@ -12,6 +12,9 @@ export const Container = styled.div`
 
     transition: all .5s ease-in-out;
 
+    animation: slideUp 0.5s ease-out;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
     img:hover {
         transform: scale(1.1);
     } 

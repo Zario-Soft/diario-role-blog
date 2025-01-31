@@ -42,6 +42,17 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 5px;
     margin: 10px;
   }
+
+  @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 `
 
 export default GlobalStyle;
