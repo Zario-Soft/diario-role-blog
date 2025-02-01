@@ -80,8 +80,11 @@ export default function ContactForm() {
             }
         }
 
-        if (!form.nome || form.nome.trim() === '') return false;
-        if (!form.whatsapp || form.whatsapp.trim() === '') return false;
+        if (!form.nome || form.nome.trim() === '' || 
+            !form.whatsapp || form.whatsapp.trim() === '') {
+                toast.error('É necessário informar os campos obrigatórios.');
+                return false;
+            }
 
         return true;
     }
