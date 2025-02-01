@@ -24,7 +24,7 @@ export default function Clients() {
                 pictureUrl="/BarbaraBruno.jpeg"
                 title="Bárbara e Bruno"
                 summary={[
-                    "Nós somos uma casal de BH com planos de mudança para a Espanha!Conhecemos a Gaby e o Éro pela internet e marcamos uma consultoria com eles! ",
+                    "Nós somos uma casal de BH com planos de mudança para a Espanha! Conhecemos a Gaby e o Éro pela internet e marcamos uma consultoria com eles! ",
                     "Pensa em um casal gente finíssima… São eles! Fizemos a consultoria, que foi muito massa. ",
                     "Eles tiraram milhões de dúvidas e deram outras milhões de dicas super importantes pra quem está de mudança, principalmente pra região que eles moram! ",
                     "Além do tempo que ficaram com a gente na ligação, se disponibilizam a responder e ajudar sempre quando as dúvidas aparecessem. Só gratidão!",

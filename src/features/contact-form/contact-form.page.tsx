@@ -19,6 +19,7 @@ interface FormValues {
     vemComEmpregoGarantido?: boolean,
     jaViveuFora?: boolean,
     falaOutrosIdiomas?: boolean,
+    ajudaSobreTecnologia?: boolean,
     quandoVem?: string,
     areaTrabalho?: string,
     perspectivaMalaga?: string,
@@ -155,6 +156,12 @@ export default function ContactForm() {
                     id="ja-vem-com-emprego"
                     label='Já vem com emprego garantido?'
                     onChange={async (e) => await setForm({ ...form, vemComEmpregoGarantido: e })}
+                />
+
+                <YesNoCombo
+                    id="ajuda-sobre-tecnologia"
+                    label='Trabalha/pretende trabalhar na área de Tecnologia em Málaga?'
+                    onChange={async (e) => await setForm({ ...form, ajudaSobreTecnologia: e })}
                 />
 
                 <YesNoCombo
