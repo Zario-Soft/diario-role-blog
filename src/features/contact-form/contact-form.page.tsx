@@ -143,50 +143,30 @@ export default function ContactForm() {
                     id="virao-criancas"
                     label='Virão crianças com você?'
                     onChange={async (e) => await setForm({ ...form, vemComCriancas: e })}
-                    sx={{
-                        width: 400,
-                        mb: '20px'
-                    }}
                 /> : <></>}
 
                 <YesNoCombo
                     id="possui-visto"
                     label='Possui visto para viver e trabalhar na Espanha?'
                     onChange={async (e) => await setForm({ ...form, temDocumento: e })}
-                    sx={{
-                        width: 400,
-                        mb: '20px'
-                    }}
                 />
 
                 <YesNoCombo
                     id="ja-vem-com-emprego"
                     label='Já vem com emprego garantido?'
                     onChange={async (e) => await setForm({ ...form, vemComEmpregoGarantido: e })}
-                    sx={{
-                        width: 400,
-                        mb: '20px'
-                    }}
                 />
 
                 <YesNoCombo
                     id="morou-em-outro-local"
                     label='Já morou em outro país além do Brasil?'
                     onChange={async (e) => await setForm({ ...form, jaViveuFora: e })}
-                    sx={{
-                        width: 400,
-                        mb: '20px'
-                    }}
                 />
 
                 <YesNoCombo
                     id="outros-idiomas"
                     label='Fala outro(s) idioma(s)?'
                     onChange={async (e) => await setForm({ ...form, falaOutrosIdiomas: e })}
-                    sx={{
-                        width: 400,
-                        mb: '20px'
-                    }}
                 />
 
                 <LimitedTextField

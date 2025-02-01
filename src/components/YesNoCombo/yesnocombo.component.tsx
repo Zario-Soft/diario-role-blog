@@ -5,7 +5,7 @@ interface YesNoComboProps {
     label: string,
     id: string,
     onChange: (e?: boolean) => Promise<void>,
-    sx?:SxProps
+    sx?: SxProps
 }
 
 export default function YesNoCombo({ onChange, label, id, sx }: YesNoComboProps) {
@@ -28,7 +28,7 @@ export default function YesNoCombo({ onChange, label, id, sx }: YesNoComboProps)
             id={id}
             value={value}
             label={'Teste'}
-            sx={sx ?? { width: 400 }}
+            sx={sx ?? { width: 380, mb: '20px' }}
             inputProps={{
                 name: 'type-interval',
                 id: 'type-id-interval',
