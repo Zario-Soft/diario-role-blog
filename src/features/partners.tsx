@@ -27,7 +27,7 @@ export default function Partners() {
                 ]}
                 style={{
                     maxWidth: '1200px',
-                    backgroundColor: '#BDE8FA'
+                    
                 }}
                 buttonCaption="Anuncie aqui"
                 onClick={() => navigator(pageRoutes.ANUNCIE)}
