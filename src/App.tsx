@@ -8,6 +8,7 @@ import Video from "./components/Video";
 import { pageRoutes } from "./routes";
 import { useNavigate } from "react-router-dom";
 import Clients from "./features/clients";
+import Partners from "./features/partners";
 
 function App() {
   const navigator = useNavigate();
@@ -98,6 +99,9 @@ function App() {
         youtubeUrl="https://www.youtube.com/@diarioderole"
         tiktokUrl="https://www.tiktok.com/@diario.derole"
         size='3x' />
+      <hr />
+      <br />
+      <Partners />
       <hr />
       <br />
       <h2 id="parceria">Nossas Parcerias</h2>

@@ -1,9 +1,8 @@
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { useState } from "react";
 import StickyHeader from "src/components/StickyHeader";
 import GlobalStyle from "src/global-style";
 import './contact-form.css'
-import YesNoCombo from "src/components/YesNoCombo/yesnocombo.component";
 import LimitedTextField from "src/components/LimitedTextField/limited-text-field.component";
 import moment from "moment";
 import { toast } from "react-toastify";
@@ -14,32 +13,26 @@ interface FormValues {
     nome: string,
     whatsapp: string,
     email?: string,
-    quantasPessoasMais?: number,
-    temDocumento?: boolean,
-    vemComCriancas?: boolean,
-    vemComEmpregoGarantido?: boolean,
-    jaViveuFora?: boolean,
-    falaOutrosIdiomas?: boolean,
-    ajudaSobreTecnologia?: boolean,
-    quandoVem?: string,
-    areaTrabalho?: string,
-    perspectivaMalaga?: string,
+    ondeNosConheceu?: string,
+    descricaoNegocio?: string,
 }
 
-const lastMessageKey = 'lastmessage';
+const lastMessageKey = 'lastmessage-partner';
 
-export default function ContactForm() {
+export default function PartnerContactForm() {
     const service = new TelegramService();
     const [form, setForm] = useState<FormValues>({} as FormValues);
     const [sent, setSent] = useState<boolean>(false);
 
     const onSendInfo = async () => {
+        
         if (!isFormValid()) return;
         localStorage.setItem(lastMessageKey, moment().toString());
 
         const props = Object.getOwnPropertyNames(form).filter(f => f !== 'whatsapp').sort();
 
-        let currentMessage = `**Inicio da mensagem de '${form.whatsapp}**'\n\n`;
+        let currentMessage = `!! CONTATO DE ANUNCIANTE !!\n\n`;
+        currentMessage += `**Inicio da mensagem de '${form.whatsapp}**'\n\n`;
         props.forEach(async (prop: string) => {
             const tsKey = prop as keyof {};
             currentMessage += `${toWords(prop)}: ${defineValue(form[tsKey])}\n\n`;
@@ -70,11 +63,11 @@ export default function ContactForm() {
             }
         }
 
-        if (!form.nome || form.nome.trim() === '' || 
+        if (!form.nome || form.nome.trim() === '' ||
             !form.whatsapp || form.whatsapp.trim() === '') {
-                toast.error('É necessário informar os campos obrigatórios.');
-                return false;
-            }
+            toast.error('É necessário informar os campos obrigatórios.');
+            return false;
+        }
 
         return true;
     }
@@ -87,8 +80,8 @@ export default function ContactForm() {
                 <h5>{'Sua mensagem foi enviada com sucesso!'}</h5>
                 <a className="back" href="/">{'Voltar ao inicio'}</a>
             </> : <>
-                <h1>Formulario de contato</h1>
-                <h5>{'Preencha os dados a seguir para que nosso orçamento seja o mais assertivo para o seu caso.'}</h5>
+                <h1>Anuncie conosco - Contato</h1>
+                <h5>{'Preencha os dados a seguir que entraremos em contato em breve'}</h5>
 
                 <LimitedTextField
                     maxLength={80}
@@ -123,89 +116,36 @@ export default function ContactForm() {
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                 />
-                <TextField
-                    className='txt-box txt-box-medium'
-                    id="numero-pessoas"
-                    label="Quantas pessoas virão com você?"
-                    variant="standard"
-                    type="number"
-                    value={form.quantasPessoasMais}
-                    onChange={(e) => setForm({ ...form, quantasPessoasMais: parseInt(e.target.value) })}
-                />
-
-                {form.quantasPessoasMais && form.quantasPessoasMais > 0 ? <YesNoCombo
-                    id="virao-criancas"
-                    label='Virão crianças com você?'
-                    onChange={async (e) => await setForm({ ...form, vemComCriancas: e })}
-                /> : <></>}
-
-                <YesNoCombo
-                    id="possui-visto"
-                    label='Possui visto para viver e trabalhar na Espanha?'
-                    onChange={async (e) => await setForm({ ...form, temDocumento: e })}
-                />
-
-                <YesNoCombo
-                    id="ja-vem-com-emprego"
-                    label='Já vem com emprego garantido?'
-                    onChange={async (e) => await setForm({ ...form, vemComEmpregoGarantido: e })}
-                />
-
-                <YesNoCombo
-                    id="ajuda-sobre-tecnologia"
-                    label='Trabalha/pretende trabalhar na área de Tecnologia em Málaga?'
-                    onChange={async (e) => await setForm({ ...form, ajudaSobreTecnologia: e })}
-                />
-
-                <YesNoCombo
-                    id="morou-em-outro-local"
-                    label='Já morou em outro país além do Brasil?'
-                    onChange={async (e) => await setForm({ ...form, jaViveuFora: e })}
-                />
-
-                <YesNoCombo
-                    id="outros-idiomas"
-                    label='Fala outro(s) idioma(s)?'
-                    onChange={async (e) => await setForm({ ...form, falaOutrosIdiomas: e })}
-                />
 
                 <LimitedTextField
-                    maxLength={25}
+                    maxLength={300}
                     className='txt-box txt-box-medium'
-                    id="quando-pretende-mudar"
-                    label="Quando pretende se mudar?"
-                    variant="standard"
-                    value={form.quandoVem}
-                    onChange={(e) => setForm({ ...form, quandoVem: e.target.value })}
-                />
-
-                <LimitedTextField
-                    maxLength={50}
-                    className='txt-box txt-box-medium'
-                    id="area-trabalho-atual"
-                    label="Área de trabalho atual"
-                    variant="standard"
-                    value={form.areaTrabalho}
-                    onChange={(e) => setForm({ ...form, areaTrabalho: e.target.value })}
+                    id="onde-conheceu"
+                    label="Onde conheceu o Diário de Rolê?"
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                    value={form.ondeNosConheceu}
+                    onChange={(e) => setForm({ ...form, ondeNosConheceu: e.target.value })}
                 />
 
                 <LimitedTextField
                     maxLength={300}
                     className='txt-box txt-box-medium'
-                    id="perspectivas-malaga"
-                    label="Quais suas perspectivas sobre Málaga?"
+                    id="descricao-negocio"
+                    label="Descreva um pouco seu negócio"
                     variant="outlined"
                     multiline
                     rows={4}
-                    value={form.perspectivaMalaga}
-                    onChange={(e) => setForm({ ...form, perspectivaMalaga: e.target.value })}
+                    value={form.descricaoNegocio}
+                    onChange={(e) => setForm({ ...form, descricaoNegocio: e.target.value })}
                 />
 
                 <Button
                     variant="contained"
                     onClick={onSendInfo}
                 >
-                    Solicitar Orçamento
+                    {'Enviar Informações'}
                 </Button>
             </>}
         </div>
