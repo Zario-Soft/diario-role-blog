@@ -77,7 +77,7 @@ export default function ContactForm() {
             }
 
         if (form.whatsapp.trim().length <= 9) {
-                toast.error('É necessário informar o DDD ou o código do país.');
+                toast.error('É necessário informar o DDD e/ou o código do país.');
                 return false;
             }
 
