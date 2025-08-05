@@ -122,7 +122,7 @@ function App() {
           style={{
             maxWidth: '600px'
           }}
-          onClick={() => window.open("https://wa.link/t94a0e", "_blank")}
+          onClick={() => window.open("https://wa.link/03q26m", "_blank")}
         />
 
         <Card
