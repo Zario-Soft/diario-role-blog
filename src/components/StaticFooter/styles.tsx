@@ -1,17 +1,16 @@
 import styled from "styled-components";
+import { Centralized } from "../general-styles";
 
 export const Container = styled.footer`
-    display:flex;
-    flex-direction: column;
+    ${Centralized}
     background-color: #1a1919;
-    transition: all 0.2s ease-in-out;
     padding: 10px 16px;
     color: #f1f1f1;
-    align-items: center;
     justify-content: space-between;
-
+    
     a {
-    color: var(--text-secondary-color);
+        color: var(--text-secondary-color);
+        transition: all 0.2s ease-in-out;
     }
 
     h3 {
@@ -24,10 +23,8 @@ export const Container = styled.footer`
 `
 
 export const Detail = styled.div`    
-    display:flex;
-    flex-direction: column;
+    ${Centralized}
     max-width: 300px;
-    align-items: center;
 `
 
 export const DevFooter = styled.footer`    

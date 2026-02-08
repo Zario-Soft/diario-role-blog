@@ -158,11 +158,11 @@ export default function ContactForm() {
                     onChange={async (e) => await setForm({ ...form, vemComEmpregoGarantido: e })}
                 />
 
-                <YesNoCombo
+                {/* <YesNoCombo
                     id="ajuda-sobre-tecnologia"
                     label='Trabalha/pretende trabalhar na área de Tecnologia em Málaga?'
                     onChange={async (e) => await setForm({ ...form, ajudaSobreTecnologia: e })}
-                />
+                /> */}
 
                 <YesNoCombo
                     id="morou-em-outro-local"
@@ -211,6 +211,9 @@ export default function ContactForm() {
                 <Button
                     variant="contained"
                     onClick={onSendInfo}
+                    style={{
+                        marginBottom: '20px'
+                    }}
                 >
                     Solicitar Orçamento
                 </Button>
