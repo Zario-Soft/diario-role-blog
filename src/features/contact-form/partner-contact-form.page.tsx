@@ -1,13 +1,13 @@
-import { Button } from "@mui/material";
+import { Button, ThemeProvider } from "@mui/material";
 import { useState } from "react";
 import StickyHeader from "src/components/StickyHeader";
-import GlobalStyle from "src/global-style";
 import './contact-form.css'
 import LimitedTextField from "src/components/LimitedTextField/limited-text-field.component";
 import moment from "moment";
 import { toast } from "react-toastify";
 import TelegramService from "src/infrastructure/telegram.service";
 import { defineValue, maxTextAllowed, toWords } from "./common-functions";
+import { GlobalStyle, useThemeMode } from "src/global-style";
 
 interface FormValues {
     nome: string,
@@ -23,6 +23,8 @@ export default function PartnerContactForm() {
     const service = new TelegramService();
     const [form, setForm] = useState<FormValues>({} as FormValues);
     const [sent, setSent] = useState<boolean>(false);
+
+    const { themeMode } = useThemeMode();
 
     const onSendInfo = async () => {
         
@@ -72,8 +74,8 @@ export default function PartnerContactForm() {
         return true;
     }
 
-    return <>
-        <GlobalStyle />
+    return <ThemeProvider theme={themeMode}>
+        <GlobalStyle theme={themeMode} />
         <StickyHeader />
         <div className="container">
             {sent ? <>
@@ -150,5 +152,5 @@ export default function PartnerContactForm() {
             </>}
         </div>
 
-    </>
+    </ThemeProvider>
 }

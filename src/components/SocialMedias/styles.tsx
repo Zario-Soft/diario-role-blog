@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     margin-bottom: 10px;
-    color: var(--text-primary);
+    color: var(--text-primary-color);
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -13,9 +13,10 @@ export const Container = styled.div`
 export const Icon = styled(FontAwesomeIcon)`
     cursor:pointer;
     transition: color 0.2s ease-in-out;
+    color: var(--text-primary-color);
 
     &:hover {
-        color: var(--text-secondary);
+        color: var(--text-secondary-color);
     }
 
 `

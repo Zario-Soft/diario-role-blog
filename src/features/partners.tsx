@@ -14,7 +14,7 @@ export default function Partners() {
         }}>
             <PresentationCard
                 id="divulgue"
-                key={919}
+                key={8719}
                 pictureUrl="/anuncie.jpeg"
                 pictureHeight="200px"
                 pictureWidth="400px"

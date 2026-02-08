@@ -1,7 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import StickyHeader from "src/components/StickyHeader";
-import GlobalStyle from "src/global-style";
 import './contact-form.css'
 import YesNoCombo from "src/components/YesNoCombo/yesnocombo.component";
 import LimitedTextField from "src/components/LimitedTextField/limited-text-field.component";
@@ -9,6 +8,8 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import TelegramService from "src/infrastructure/telegram.service";
 import { defineValue, maxTextAllowed, toWords } from "./common-functions";
+import { ThemeProvider } from "styled-components";
+import { GlobalStyle, useThemeMode } from "src/global-style";
 
 interface FormValues {
     nome: string,
@@ -32,6 +33,7 @@ export default function ContactForm() {
     const service = new TelegramService();
     const [form, setForm] = useState<FormValues>({} as FormValues);
     const [sent, setSent] = useState<boolean>(false);
+    const { themeMode } = useThemeMode();
 
     const onSendInfo = async () => {
         if (!isFormValid()) return;
@@ -70,22 +72,22 @@ export default function ContactForm() {
             }
         }
 
-        if (!form.nome || form.nome.trim() === '' || 
+        if (!form.nome || form.nome.trim() === '' ||
             !form.whatsapp || form.whatsapp.trim() === '') {
-                toast.error('É necessário informar os campos obrigatórios.');
-                return false;
-            }
+            toast.error('É necessário informar os campos obrigatórios.');
+            return false;
+        }
 
         if (form.whatsapp.trim().length <= 9) {
-                toast.error('É necessário informar o DDD e/ou o código do país.');
-                return false;
-            }
+            toast.error('É necessário informar o DDD e/ou o código do país.');
+            return false;
+        }
 
         return true;
     }
 
-    return <>
-        <GlobalStyle />
+    return <ThemeProvider theme={themeMode}>
+        <GlobalStyle theme={themeMode} />
         <StickyHeader />
         <div className="container">
             {sent ? <>
@@ -215,5 +217,5 @@ export default function ContactForm() {
             </>}
         </div>
 
-    </>
+    </ThemeProvider>
 }

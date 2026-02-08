@@ -1,5 +1,5 @@
 import SocialMedias from "./components/SocialMedias";
-import GlobalStyle from "./global-style";
+import { GlobalStyle,useThemeMode } from "./global-style";
 import Card from "./components/Card";
 import StickyHeader from "./components/StickyHeader";
 import StaticFooter from "./components/StaticFooter";
@@ -9,13 +9,21 @@ import { pageRoutes } from "./routes";
 import { useNavigate } from "react-router-dom";
 import Clients from "./features/clients";
 import Partners from "./features/partners";
+import { ThemeProvider } from "styled-components";
+import { Line } from "./components/Line";
 
 function App() {
   const navigator = useNavigate();
+  const { theme, themeMode, toggleTheme } = useThemeMode();
 
-  return <>
-    <GlobalStyle />
+  const themeSwitcher = false;
+
+  return <ThemeProvider theme={themeMode}>
+    <GlobalStyle theme={themeMode} />
     <StickyHeader />
+    {themeSwitcher && <button onClick={toggleTheme} aria-label="Toggle Theme">
+      Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
+    </button>}
     <div style={{
       display: 'flex',
       flexDirection: 'column',
@@ -60,7 +68,7 @@ function App() {
       <br />
       <PresentationCard
         id="como-podemos-ajudar-id"
-        key={919}
+        key={9219}
         pictureUrl="/ajuda.jpeg"
         pictureHeight="350px"
         pictureWidth="350px"
@@ -86,12 +94,12 @@ function App() {
         onClick={() => navigator(pageRoutes.FORMULARIO)}
       />
 
-      <hr />
+      <Line />
       <br />
 
       <Clients />
 
-      <hr />
+      <Line />
 
       <h2 id="contato">Siga nossas redes sociais</h2>
       <SocialMedias
@@ -99,10 +107,10 @@ function App() {
         youtubeUrl="https://www.youtube.com/@diarioderole"
         tiktokUrl="https://www.tiktok.com/@diario.derole"
         size='3x' />
-      <hr />
+      <Line />
       <br />
       <Partners />
-      <hr />
+      <Line />
       <br />
       <h2 id="parceria">Nossas Parcerias</h2>
       <div style={{
@@ -141,7 +149,7 @@ function App() {
 
       </div>
 
-      <hr />
+      <Line />
       <h2 id="videos">Nossos vídeos imperdíveis</h2>
       <div style={{
         display: 'flex',
@@ -154,11 +162,11 @@ function App() {
         <Video url="https://www.youtube.com/embed/YL1RHrTTzJs?si=J5nF-w7aiTuhiaLg" />
       </div>
 
-      <hr />
+      <Line />
       <br />
     </div>
     <StaticFooter spinLogo />
-  </>
+  </ThemeProvider>
 }
 
 export default App;

@@ -19,13 +19,13 @@ function StickyHeader(props: StickyHeaderProps) {
     return <>
         <Styled.Container>
             <img src='/logo_panel.png' alt="Diário de Rolê - Logo do blog" />
-            {(props.hideMenu === undefined || props.hideMenu === false) && <div className="header" id="myHeader">
+            {!props.hideMenu && <div className="header" id="myHeader">
                 <nav>
                     <a href="/#sobre">Sobre</a> |&nbsp; 
                     <a href={pageRoutes.FORMULARIO}>Contato</a> |&nbsp;
                     <a href="/#parceria">Parcerias</a> |&nbsp;
                     <a href="/#indicacoes">Indicações</a> |&nbsp;
-                    <a href="/#videos">Videos</a>
+                    <a href="/#videos">Videos</a>                    
                 </nav>
             </div>}
         </Styled.Container>

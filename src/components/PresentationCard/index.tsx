@@ -19,7 +19,7 @@ interface PresentationCardProps {
 
 export default function PresentationCard(props: PresentationCardProps) {
     return <Styled.Container style={props.style} id={props.id} >
-        <Styled.LeftPanel>
+        <Styled.LeftPanel key={`${props.id}-left-panel`}>
             <Styled.Picture
                 src={props.pictureUrl}
                 $width={props.pictureWidth}
@@ -27,18 +27,18 @@ export default function PresentationCard(props: PresentationCardProps) {
                 $round={props.pictureRound}
             />
         </Styled.LeftPanel>
-        <Styled.RightPanel>
+        <Styled.RightPanel key={`${props.id}-right-panel`}>
             <h2>{props.title}</h2>
             {props.subtitle && <>
                 <h4>{props.subtitle}</h4>
                 <br />
             </>}
-            {props.summary && props.summary.map((value, index) => <><p key={index}>{value}</p></>)}
-            {props.hideButton !== true && <RoundedButton caption={props.buttonCaption ?? 'Saiba mais'} style={{
+            {props.summary && props.summary.map((value, index) => <span key={index}><p>{value}</p></span>)}
+            {!props.hideButton && <RoundedButton caption={props.buttonCaption ?? 'Saiba mais'} style={{
                 textAlign: 'center',
                 maxWidth: '200px',
                 borderRadius: '10px',
-                border: '2px solid var(--text-secondary)',
+                border: '2px solid var(--text-secondary-color)',
                 backgroundColor: 'transparent',
                 color: 'black'
             }}

@@ -15,7 +15,7 @@ export default function Clients() {
         }}>
             <PresentationCard
                 hideButton
-                id="sobre"
+                id="barbara-bruno"
                 key={123}
                 pictureRound={'100px'}
                 pictureWidth={'200px'}
@@ -38,8 +38,8 @@ export default function Clients() {
 
             <PresentationCard
                 hideButton
-                id="sobre"
-                key={123}
+                id="patricia-celsimar"
+                key={124}
                 pictureRound={'100px'}
                 pictureWidth={'200px'}
                 pictureHeight={'200px'}
@@ -64,8 +64,8 @@ export default function Clients() {
 
             <PresentationCard
                 hideButton
-                id="sobre"
-                key={123}
+                id="carla-ariel"
+                key={125}
                 pictureRound={'100px'}
                 pictureWidth={'200px'}
                 pictureHeight={'200px'}
@@ -89,8 +89,8 @@ export default function Clients() {
 
             <PresentationCard
                 hideButton
-                id="sobre"
-                key={123}
+                id="walney-luciana-pedro"
+                key={126}
                 pictureRound={'100px'}
                 pictureWidth={'200px'}
                 pictureHeight={'200px'}

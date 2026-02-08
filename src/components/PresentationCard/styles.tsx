@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Centralized } from "../general-styles";
 
 export const Container = styled.div`
     margin: 10px;
@@ -26,10 +27,8 @@ export const Container = styled.div`
 `
 
 export const LeftPanel = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    ${Centralized}
+
     margin-right: 30px;
 
     @media (max-width: 1000px) {
@@ -39,8 +38,13 @@ export const LeftPanel = styled.div`
 
 export const RightPanel = styled.div`
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+
+    p {
+        margin-bottom: 20px;
+    }
 
     @media (max-width: 1000px) {
         align-items: center;

@@ -1,16 +1,13 @@
 import styled from "styled-components";
+import { Centralized } from "../general-styles";
 
 export const Container = styled.header`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${Centralized}
 
-  transition: all 0.2s ease-in-out;
- 
   .header {
     padding: 10px 16px;
     background-color: #1a1919;
-    color: #f1f1f1;
+    color: var(--text-primary-color);
     width: 100.5%;
   }
   
@@ -33,9 +30,12 @@ export const Container = styled.header`
     text-align: center;
   }
 
-  a:hover {
-    color: var(--text-secondary);
-  }
+  a {
+    color: white;
+    &:hover {
+      color: var(--text-secondary-color);
+    }
+  }  
 
   img {
     width: 1000px;

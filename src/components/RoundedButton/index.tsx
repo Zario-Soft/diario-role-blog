@@ -8,5 +8,7 @@ interface RoundedButtonProps {
 }
 
 export default function RoundedButton({ style, onClick, caption }: RoundedButtonProps) {
-    return <Styled.Container style={style} onClick={onClick}><p>{caption}</p></Styled.Container>
+    return <Styled.Container style={style} onClick={onClick}>
+        <h5>{caption}</h5>
+    </Styled.Container>
 }

@@ -1,46 +1,140 @@
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { createGlobalStyle } from "styled-components"
 
+export interface Theme {
+  colors: {
+    background: string;
+    surface: string;
+    primary: string;
+    textPrimary: string;
+    textSecondary: string;
+    textTertiary: string;
+    border: string;
+  };
+  spacing: {
+    sm: string;
+    md: string;
+    lg: string;
+  };
+}
 
-const GlobalStyle = createGlobalStyle`
-*{     
+export const LightTheme: Theme = {
+  colors: {
+    background: '#F8FAFC', // Light gray-blue
+    surface: '#FFFFFF',    // Pure white
+    primary: '#3B82F6',    // Vibrant blue
+    textPrimary: '#1E293B', // Dark slate
+    textSecondary: '#f78da7', // Muted slate
+    textTertiary: '#94a3b8', // Light gray
+    border: '#E2E8F0', // Light border color
+  },
+  spacing: {
+    sm: '8px',
+    md: '16px',
+    lg: '24px',
+  },
+};
+
+export const DarkTheme: Theme = {
+  colors: {
+    background: '#0F172A', // Deep navy
+    surface: '#1E293B',    // Lighter navy
+    primary: '#60A5FA',    // Lighter blue for better contrast on dark
+    textPrimary: '#F1F5F9', // Near white
+    textSecondary: '#f78da7', // Muted gray
+    textTertiary: '#94a3b8', // Light gray
+    border: '#334155', // Dark border color
+  },
+  spacing: {
+    sm: '8px',
+    md: '16px',
+    lg: '24px',
+  },
+};
+
+export type ThemeMode = 'light' | 'dark';
+export const themes: Record<ThemeMode, Theme> = {
+  light: LightTheme,
+  dark: DarkTheme,
+};
+
+export const useThemeMode = () => {
+  const [theme, setTheme] = useState<ThemeMode>('light');
+
+  const setMode = useCallback((mode: ThemeMode) => {
+    setTheme(mode);
+    document.documentElement.setAttribute('data-theme', mode);
+    localStorage.setItem('theme', mode);
+  }, []);
+
+  const toggleTheme = () => theme === 'light' ? setMode('dark') : setMode('light');
+
+  useEffect(() => {
+    const setInternalTheme = (theme: ThemeMode) => {
+      setTheme(theme);
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+
+    const savedTheme = localStorage.getItem('theme') as ThemeMode | null;
+    if (savedTheme) {
+      setInternalTheme(savedTheme);
+    }
+    else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = prefersDark ? 'dark' : 'light';
+      setInternalTheme(initialTheme);
+      localStorage.setItem('theme', initialTheme);
+    }
+
+  }, []);
+
+  const themeMode = useMemo(() => themes[theme], [theme]);
+
+  return { theme, toggleTheme, themeMode };
+}
+
+
+export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
   padding: 0;
-    outline:0;
-    box-sizing:border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
 }
 
 :root {
-    --background: white;
-    --text-primary: black;
-    --text-secondary: #f78da7;
-    --text-tertiary: #4f6ee4;
-    --accent: purple;
-    
-  }
-  [data-theme='dark'] {
-    --background: black;
-    --text-primary: white;
-    --text-secondary: grey;
-    --accent: darkred;
+    --bg-color: ${({ theme }) => theme.colors.background};
+    --surface-color: ${({ theme }) => theme.colors.surface};
+    --primary-color: ${({ theme }) => theme.colors.primary};
+    --text-primary-color: ${({ theme }) => theme.colors.textPrimary};
+    --text-secondary-color: ${({ theme }) => theme.colors.textSecondary};
+    --text-tertiary-color: ${({ theme }) => theme.colors.textTertiary};
+    --border-color: ${({ theme }) => theme.colors.border};
+    --spacing-sm: ${({ theme }) => theme.spacing.sm};
+    --spacing-md: ${({ theme }) => theme.spacing.md};
+    --spacing-lg: ${({ theme }) => theme.spacing.lg};    
   }
 
-  a, a:hover, a:focus, a:active {
-    transition: all 0.2s ease-in-out;
+
+  body {
+      background-color: var(--bg-color);
+      color: var(--text-primary-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.6;
+  }
+
+  a {
     text-decoration: none;
-    color: inherit;
-  } 
+    transition: all 0.2s ease-in-out;    
 
-  hr {
-    height: 5PX;
-    color: black;
-    fill: black;
-    width: 200px;
-    border-color: black;
-    background: black;
-    border-radius: 5px;
-    margin: 10px;
+    &:hover,
+    &:focus,
+    &:active {
+      color: var(--text-primary-color);
+    }
   }
 
   @keyframes slideUp {
@@ -54,5 +148,3 @@ const GlobalStyle = createGlobalStyle`
         }
     }
 `
-
-export default GlobalStyle;
