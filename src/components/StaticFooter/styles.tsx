@@ -9,10 +9,9 @@ export const Container = styled.footer`
     color: #f1f1f1;
     align-items: center;
     justify-content: space-between;
-    margin: -7px;
 
     a {
-    color: var(--text-secondary);
+    color: var(--text-secondary-color);
     }
 
     h3 {
