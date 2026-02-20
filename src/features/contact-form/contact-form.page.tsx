@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useState } from "react";
 import StickyHeader from "src/components/StickyHeader";
 import './contact-form.css'
@@ -10,6 +10,7 @@ import TelegramService from "src/infrastructure/telegram.service";
 import { defineValue, maxTextAllowed, toWords } from "./common-functions";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle, useThemeMode } from "src/global-style";
+import RoundedButton from "src/components/RoundedButton";
 
 interface FormValues {
     nome: string,
@@ -57,7 +58,7 @@ export default function ContactForm() {
             await service.sendMessage(currentMessage);
         }
 
-        await setSent(true);
+        setSent(true);
     }
 
     const isFormValid = (): boolean => {
@@ -104,7 +105,7 @@ export default function ContactForm() {
                     label="Nome e sobrenome"
                     variant="standard"
                     value={form.nome}
-                    onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                    onChange={(e) => setForm(f => ({ ...f, nome: e.target.value }))}
                     error={!form.nome || form.nome.trim() === ''}
                     helperText={!form.nome || form.nome.trim() === '' ? 'Campo obrigatório' : ''}
                 />
@@ -116,7 +117,7 @@ export default function ContactForm() {
                     label="Whatsapp"
                     variant="standard"
                     value={form.whatsapp}
-                    onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
+                    onChange={(e) => setForm(f => ({ ...f, whatsapp: e.target.value }))}
                     error={!form.whatsapp || form.whatsapp.trim() === ''}
                     helperText={'Obrigatório (Adicione o código do país. Ex: +553298852-2331)'}
                 />
@@ -128,7 +129,7 @@ export default function ContactForm() {
                     type="email"
                     variant="standard"
                     value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))}
                 />
                 <TextField
                     className='txt-box txt-box-medium'
@@ -137,25 +138,25 @@ export default function ContactForm() {
                     variant="standard"
                     type="number"
                     value={form.quantasPessoasMais}
-                    onChange={(e) => setForm({ ...form, quantasPessoasMais: parseInt(e.target.value) })}
+                    onChange={(e) => setForm(f => ({ ...f, quantasPessoasMais: parseInt(e.target.value) || 0 }))}
                 />
 
                 {form.quantasPessoasMais && form.quantasPessoasMais > 0 ? <YesNoCombo
                     id="virao-criancas"
                     label='Virão crianças com você?'
-                    onChange={async (e) => await setForm({ ...form, vemComCriancas: e })}
+                    onChange={async (e) => setForm(f => ({ ...f, vemComCriancas: e }))}
                 /> : <></>}
 
                 <YesNoCombo
                     id="possui-visto"
-                    label='Possui visto para viver e trabalhar na Espanha?'
-                    onChange={async (e) => await setForm({ ...form, temDocumento: e })}
+                    label='Possui visto/documentos para viver e trabalhar na Espanha?'
+                    onChange={async (e) => setForm(f => ({ ...f, temDocumento: e }))}
                 />
 
                 <YesNoCombo
                     id="ja-vem-com-emprego"
                     label='Já vem com emprego garantido?'
-                    onChange={async (e) => await setForm({ ...form, vemComEmpregoGarantido: e })}
+                    onChange={async (e) => setForm(f => ({ ...f, vemComEmpregoGarantido: e }))}
                 />
 
                 {/* <YesNoCombo
@@ -167,13 +168,13 @@ export default function ContactForm() {
                 <YesNoCombo
                     id="morou-em-outro-local"
                     label='Já morou em outro país além do Brasil?'
-                    onChange={async (e) => await setForm({ ...form, jaViveuFora: e })}
+                    onChange={async (e) => setForm(f => ({ ...f, jaViveuFora: e }))}
                 />
 
                 <YesNoCombo
                     id="outros-idiomas"
                     label='Fala outro(s) idioma(s)?'
-                    onChange={async (e) => await setForm({ ...form, falaOutrosIdiomas: e })}
+                    onChange={async (e) => setForm(f => ({ ...f, falaOutrosIdiomas: e }))}
                 />
 
                 <LimitedTextField
@@ -183,7 +184,7 @@ export default function ContactForm() {
                     label="Quando pretende se mudar?"
                     variant="standard"
                     value={form.quandoVem}
-                    onChange={(e) => setForm({ ...form, quandoVem: e.target.value })}
+                    onChange={(e) => setForm(f => ({ ...f, quandoVem: e.target.value }))}
                 />
 
                 <LimitedTextField
@@ -193,7 +194,7 @@ export default function ContactForm() {
                     label="Área de trabalho atual"
                     variant="standard"
                     value={form.areaTrabalho}
-                    onChange={(e) => setForm({ ...form, areaTrabalho: e.target.value })}
+                    onChange={(e) => setForm(f => ({ ...f, areaTrabalho: e.target.value }))}
                 />
 
                 <LimitedTextField
@@ -205,18 +206,14 @@ export default function ContactForm() {
                     multiline
                     rows={4}
                     value={form.perspectivaMalaga}
-                    onChange={(e) => setForm({ ...form, perspectivaMalaga: e.target.value })}
+                    onChange={(e) => setForm(f => ({ ...f, perspectivaMalaga: e.target.value }))}
                 />
 
-                <Button
-                    variant="contained"
+                <RoundedButton caption={'Solicitar Orçamento'} style={{
+                    textAlign: 'center'
+                }}
                     onClick={onSendInfo}
-                    style={{
-                        marginBottom: '20px'
-                    }}
-                >
-                    Solicitar Orçamento
-                </Button>
+                />
             </>}
         </div>
 

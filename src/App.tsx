@@ -1,5 +1,5 @@
 import SocialMedias from "./components/SocialMedias";
-import { GlobalStyle,useThemeMode } from "./global-style";
+import { DiarioThemeProvider, useThemeMode } from "./global-style";
 import Card from "./components/Card";
 import StickyHeader from "./components/StickyHeader";
 import StaticFooter from "./components/StaticFooter";
@@ -9,17 +9,15 @@ import { pageRoutes } from "./routes";
 import { useNavigate } from "react-router-dom";
 import Clients from "./features/clients";
 import Partners from "./features/partners";
-import { ThemeProvider } from "styled-components";
 import { Line } from "./components/Line";
 
 function App() {
   const navigator = useNavigate();
-  const { theme, themeMode, toggleTheme } = useThemeMode();
+  const { theme, toggleTheme } = useThemeMode();
 
   const themeSwitcher = false;
 
-  return <ThemeProvider theme={themeMode}>
-    <GlobalStyle theme={themeMode} />
+  return <DiarioThemeProvider>
     <StickyHeader />
     {themeSwitcher && <button onClick={toggleTheme} aria-label="Toggle Theme">
       Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
@@ -166,7 +164,7 @@ function App() {
       <br />
     </div>
     <StaticFooter spinLogo />
-  </ThemeProvider>
+  </DiarioThemeProvider>
 }
 
 export default App;

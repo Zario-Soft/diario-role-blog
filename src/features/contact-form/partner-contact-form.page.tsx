@@ -1,4 +1,3 @@
-import { Button, ThemeProvider } from "@mui/material";
 import { useState } from "react";
 import StickyHeader from "src/components/StickyHeader";
 import './contact-form.css'
@@ -8,6 +7,8 @@ import { toast } from "react-toastify";
 import TelegramService from "src/infrastructure/telegram.service";
 import { defineValue, maxTextAllowed, toWords } from "./common-functions";
 import { GlobalStyle, useThemeMode } from "src/global-style";
+import RoundedButton from "src/components/RoundedButton";
+import { ThemeProvider } from "styled-components";
 
 interface FormValues {
     nome: string,
@@ -23,11 +24,10 @@ export default function PartnerContactForm() {
     const service = new TelegramService();
     const [form, setForm] = useState<FormValues>({} as FormValues);
     const [sent, setSent] = useState<boolean>(false);
-
     const { themeMode } = useThemeMode();
 
     const onSendInfo = async () => {
-        
+
         if (!isFormValid()) return;
         localStorage.setItem(lastMessageKey, moment().toString());
 
@@ -50,7 +50,7 @@ export default function PartnerContactForm() {
             await service.sendMessage(currentMessage);
         }
 
-        await setSent(true);
+        setSent(true);
     }
 
     const isFormValid = (): boolean => {
@@ -143,12 +143,11 @@ export default function PartnerContactForm() {
                     onChange={(e) => setForm({ ...form, descricaoNegocio: e.target.value })}
                 />
 
-                <Button
-                    variant="contained"
+                <RoundedButton caption={'Enviar Informações'} style={{
+                    textAlign: 'center'
+                }}
                     onClick={onSendInfo}
-                >
-                    {'Enviar Informações'}
-                </Button>
+                />
             </>}
         </div>
 

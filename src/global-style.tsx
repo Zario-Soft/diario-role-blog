@@ -1,4 +1,5 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { ThemeProvider } from "@emotion/react";
+import { useState, useCallback, useEffect, useMemo, ReactNode } from "react";
 import { createGlobalStyle } from "styled-components"
 
 export interface Theme {
@@ -148,3 +149,12 @@ export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
         }
     }
 `
+
+export const DiarioThemeProvider = ({ children }: { children: ReactNode }) => {
+  const { themeMode } = useThemeMode();
+  
+  return <ThemeProvider theme={themeMode}>
+    <GlobalStyle theme={themeMode} />
+    {children}
+  </ThemeProvider>
+}
