@@ -30,6 +30,8 @@ interface FormValues {
 
 const lastMessageKey = 'lastmessage';
 
+const validateWhatsapp = new RegExp('^[+]*[0-9]{7,}$');
+
 export default function ContactForm() {
     const service = new TelegramService();
     const [form, setForm] = useState<FormValues>({} as FormValues);
@@ -81,6 +83,11 @@ export default function ContactForm() {
 
         if (form.whatsapp.trim().length <= 9) {
             toast.error('É necessário informar o DDD e/ou o código do país.');
+            return false;
+        }
+
+        if (!validateWhatsapp.test(form.whatsapp.trim())) {
+            toast.error('O número de Whatsapp deve conter apenas números e o símbolo de + (ex: +553298852-2331).');
             return false;
         }
 
