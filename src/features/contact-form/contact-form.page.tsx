@@ -1,8 +1,7 @@
-import { TextField } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, InputLabel, Select, TextField } from "@mui/material";
 import { useState } from "react";
 import StickyHeader from "src/components/StickyHeader";
 import './contact-form.css'
-import YesNoCombo from "src/components/YesNoCombo/yesnocombo.component";
 import LimitedTextField from "src/components/LimitedTextField/limited-text-field.component";
 import moment from "moment";
 import { toast } from "react-toastify";
@@ -11,6 +10,8 @@ import { defineValue, maxTextAllowed, toWords } from "./common-functions";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle, useThemeMode } from "src/global-style";
 import RoundedButton from "src/components/RoundedButton";
+
+type QuandoVemType = 'Ainda não sabe' | 'Esse ano' | 'Ano que vem' | 'Daqui a dois anos';
 
 interface FormValues {
     nome: string,
@@ -22,8 +23,7 @@ interface FormValues {
     vemComEmpregoGarantido?: boolean,
     jaViveuFora?: boolean,
     falaOutrosIdiomas?: boolean,
-    ajudaSobreTecnologia?: boolean,
-    quandoVem?: string,
+    quandoVem?: QuandoVemType,
     areaTrabalho?: string,
     perspectivaMalaga?: string,
 }
@@ -34,7 +34,17 @@ const validateWhatsapp = new RegExp('^[+]*[0-9]{7,}$');
 
 export default function ContactForm() {
     const service = new TelegramService();
-    const [form, setForm] = useState<FormValues>({} as FormValues);
+    const [form, setForm] = useState<FormValues>({
+        quantasPessoasMais: 0,
+        temDocumento: false,
+        vemComCriancas: false,
+        vemComEmpregoGarantido: false,
+        jaViveuFora: false,
+        falaOutrosIdiomas: false,
+        quandoVem: "Ainda não sabe",
+        areaTrabalho: '',
+        perspectivaMalaga: '',
+    } as FormValues);
     const [sent, setSent] = useState<boolean>(false);
     const { themeMode } = useThemeMode();
 
@@ -132,7 +142,7 @@ export default function ContactForm() {
                     maxLength={30}
                     className='txt-box txt-box-medium'
                     id="email-contato"
-                    label="E-mail"
+                    label="E-mail (opcional)"
                     type="email"
                     variant="standard"
                     value={form.email}
@@ -148,51 +158,93 @@ export default function ContactForm() {
                     onChange={(e) => setForm(f => ({ ...f, quantasPessoasMais: parseInt(e.target.value) || 0 }))}
                 />
 
-                {form.quantasPessoasMais && form.quantasPessoasMais > 0 ? <YesNoCombo
-                    id="virao-criancas"
-                    label='Virão crianças com você?'
-                    onChange={async (e) => setForm(f => ({ ...f, vemComCriancas: e }))}
-                /> : <></>}
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {form.quantasPessoasMais && form.quantasPessoasMais > 0 ? <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={form.vemComCriancas}
+                                onChange={async (e) => setForm(f => ({ ...f, vemComCriancas: e.target.checked }))}
+                                name="vem_com_criancas"
+                                color="primary"
+                            />
+                        }
+                        label="Virão crianças comigo"
+                        id="virao-criancas"
+                    /> : <></>}
 
-                <YesNoCombo
-                    id="possui-visto"
-                    label='Possui visto/documentos para viver e trabalhar na Espanha?'
-                    onChange={async (e) => setForm(f => ({ ...f, temDocumento: e }))}
-                />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={form.temDocumento}
+                                onChange={async (e) => setForm(f => ({ ...f, temDocumento: e.target.checked }))}
+                                name="possui_visto"
+                                color="primary"
+                            />
+                        }
+                        label="Possuo visto/documentos para viver e trabalhar na Espanha"
+                        id="possui-visto"
+                    />
 
-                <YesNoCombo
-                    id="ja-vem-com-emprego"
-                    label='Já vem com emprego garantido?'
-                    onChange={async (e) => setForm(f => ({ ...f, vemComEmpregoGarantido: e }))}
-                />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={form.vemComEmpregoGarantido}
+                                onChange={async (e) => setForm(f => ({ ...f, vemComEmpregoGarantido: e.target.checked }))}
+                                name="vem_com_emprego_garantido"
+                                color="primary"
+                            />
+                        }
+                        label="Estou indo com emprego garantido"
+                        id="vem-com-emprego-garantido"
+                    />
 
-                {/* <YesNoCombo
-                    id="ajuda-sobre-tecnologia"
-                    label='Trabalha/pretende trabalhar na área de Tecnologia em Málaga?'
-                    onChange={async (e) => await setForm({ ...form, ajudaSobreTecnologia: e })}
-                /> */}
 
-                <YesNoCombo
-                    id="morou-em-outro-local"
-                    label='Já morou em outro país além do Brasil?'
-                    onChange={async (e) => setForm(f => ({ ...f, jaViveuFora: e }))}
-                />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={form.jaViveuFora}
+                                onChange={async (e) => setForm(f => ({ ...f, jaViveuFora: e.target.checked }))}
+                                name="ja_viveu_fora"
+                                color="primary"
+                            />
+                        }
+                        label="Já vivi em outro país além do Brasil"
+                        id="ja-viveu-fora"
+                    />
 
-                <YesNoCombo
-                    id="outros-idiomas"
-                    label='Fala outro(s) idioma(s)?'
-                    onChange={async (e) => setForm(f => ({ ...f, falaOutrosIdiomas: e }))}
-                />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={form.falaOutrosIdiomas}
+                                onChange={async (e) => setForm(f => ({ ...f, falaOutrosIdiomas: e.target.checked }))}
+                                name="fala_outros_idiomas"
+                                color="primary"
+                            />
+                        }
+                        label="Falo outro(s) idioma(s)"
+                        id="outros-idiomas"
+                    />
+                </div>
 
-                <LimitedTextField
-                    maxLength={25}
-                    className='txt-box txt-box-medium'
-                    id="quando-pretende-mudar"
-                    label="Quando pretende se mudar?"
-                    variant="standard"
-                    value={form.quandoVem}
-                    onChange={(e) => setForm(f => ({ ...f, quandoVem: e.target.value }))}
-                />
+                <FormControl variant="standard">
+                    <InputLabel
+                    shrink
+                    >{'Quando pretende se mudar?'}</InputLabel>
+                    <Select
+                        native
+                        key={'quando-pretende-mudar'}
+                        onChange={(e) => setForm(f => ({ ...f, quandoVem: e.target.value as QuandoVemType }))}
+                        id={'quando-pretende-mudar'}
+                        value={form.quandoVem}
+                        label={'Teste'}
+                        sx={{ width: 380, mb: '20px' }}                        
+                    >
+                        <option value={'Ainda não sabe'}>Ainda não sei</option>
+                        <option value={'Esse ano'}>Esse ano</option>
+                        <option value={'Ano que vem'}>Ano que vem</option>
+                        <option value={'Daqui a dois anos'}>Daqui a dois anos</option>
+                    </Select>
+                </FormControl>
 
                 <LimitedTextField
                     maxLength={50}

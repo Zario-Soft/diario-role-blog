@@ -98,7 +98,7 @@ export const useThemeMode = () => {
 export const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
+  margin: 2px;
   padding: 0;
 }
 
